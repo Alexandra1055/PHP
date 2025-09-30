@@ -68,13 +68,21 @@ $mensage = "No has leido $nombre";
 <?php
     $books = [
       [
-              'nombre' => 'Harry Potter',
+              'nombre' => 'Harry Potter y la piedra filosofal',
               'autor' => 'J.K. Rowling',
+          'añoLanzamiento' => 1999,
             'UrlCompra' => 'https://www.ejemplo.com'
       ],
-      [
+            [
+                    'nombre' => 'I.T.',
+                    'autor' => 'Stephen King',
+                    'añoLanzamiento' => 1986,
+                    'UrlCompra' => 'https://www.ejemplo.com'
+            ],
+            [
             'nombre' => 'La torre oscura',
             'autor' => 'Stephen King',
+          'añoLanzamiento' => 1982,
             'UrlCompra' => 'https://www.ejemplo.com'
       ]//una array puede contener otras arrays, => es una matriz asociativa, asocia una clave con un valor
     ];
@@ -82,11 +90,13 @@ $mensage = "No has leido $nombre";
 ?>
 <ul>
     <?php foreach ($books as $book) :?>
+    <?php if ($book['autor']==='Stephen King'):?>
     <li>
         <a href="<?= $book['UrlCompra'] ?>">
-            <?=$book['nombre']; ?>
+            <?=$book['nombre']; ?> (<?= $book['añoLanzamiento']; ?>) - By <?= $book['autor']; ?>
         </a>
     </li>
+    <?php endif;?>
     <?php endforeach; ?>
 </ul>
 </body>
