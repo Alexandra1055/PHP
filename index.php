@@ -61,5 +61,33 @@ $mensage = "No has leido $nombre";
     <?php endforeach; ?>
 
 </ul>
+<h1>
+    Arrays asociattivas
+</h1>
+
+<?php
+    $books = [
+      [
+              'nombre' => 'Harry Potter',
+              'autor' => 'J.K. Rowling',
+            'UrlCompra' => 'https://www.ejemplo.com'
+      ],
+      [
+            'nombre' => 'La torre oscura',
+            'autor' => 'Stephen King',
+            'UrlCompra' => 'https://www.ejemplo.com'
+      ]//una array puede contener otras arrays, => es una matriz asociativa, asocia una clave con un valor
+    ];
+
+?>
+<ul>
+    <?php foreach ($books as $book) :?>
+    <li>
+        <a href="<?= $book['UrlCompra'] ?>">
+            <?=$book['nombre']; ?>
+        </a>
+    </li>
+    <?php endforeach; ?>
+</ul>
 </body>
 </html>
