@@ -28,17 +28,38 @@
 <?php
 $nombre = "Dark Matter";
 $read = false;
-
-if ($read){
+$mensage = "No has leido $nombre";
+/*if ($read){
     $mensage = "No has leido $nombre";
 }else{
     $mensage = "Has leido $nombre";
-}
+}*/
 ?>
 <h1>
     <!--?php echo es lo mismo que usar solo ?=, asi es mas rapido -->
     ¿Has leido "<?php echo $nombre; ?>"?
     <?= $mensage ?>;
 </h1>
+
+<h1> Arrays: Libros recomendados</h1>
+<?php
+
+    $books = [
+            "Harry Potter",
+        "IT",
+        "La torre oscura"
+    ];
+    ?>
+<ul>
+    <?php
+    /*foreach ($books as $book) {
+        echo "<li>$book</li>";*/
+        //Abreviatura
+        foreach ($books as $book) :?>
+    <li><?php echo $book; // se puede abreviar mas?>
+    <?= $book //esto seria mas abreviado?></li>
+    <?php endforeach; ?>
+
+</ul>
 </body>
 </html>
