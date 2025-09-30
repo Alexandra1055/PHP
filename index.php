@@ -87,10 +87,20 @@ $mensage = "No has leido $nombre";
       ]//una array puede contener otras arrays, => es una matriz asociativa, asocia una clave con un valor
     ];
 
+    function filtrarAutor($books, $autor){
+        $filtrarlibros = [];
+
+        foreach ($books as $book){
+            if($book['autor'] === $autor){
+                $filtrarlibros[] = $book;
+            }
+        }
+       return $filtrarlibros;
+    }
 ?>
 <ul>
-    <?php foreach ($books as $book) :?>
-    <?php if ($book['autor']==='Stephen King'):?>
+    <?php foreach (filtrarAutor($books, 'Stephen King') as $book) :?>
+    <?php if ($book['autor']==='Stephen King'): //importante usar el triple = para comparar?>
     <li>
         <a href="<?= $book['UrlCompra'] ?>">
             <?=$book['nombre']; ?> (<?= $book['añoLanzamiento']; ?>) - By <?= $book['autor']; ?>
