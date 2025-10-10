@@ -42,7 +42,7 @@
     ];
 
     //podemos Crear funciones con nombre o anonimas
-   $filtrarAutor = function ($books, $autor){
+   /*$filtrarAutor = function ($books, $autor){
         $filtrarlibros = [];
 
         foreach ($books as $book){
@@ -52,7 +52,23 @@
         }
        return $filtrarlibros;
     }; //esto es lo que se conoce por funcion lambda
-$filtrarlibros = filtrarAutor($books, 'J.K. Rowling');
+$filtrarlibros = filtrarAutor($books, 'J.K. Rowling');*/
+
+//funciones mas genericas
+function filtrar ($items, $key, $value){
+    $filtrarItems = [];
+
+    foreach ($items as $item){
+        if(item[$key] === $value){
+            $filtrarItems[] = $item;
+        }
+    }
+    return $filtrarItems;
+};
+
+$filtrarlibros = filtrar($books, function ($book){
+    return $book['añoLanzamiento'] === 1999;
+});
 ?>
 <ul>
     <?php foreach ($filtrarlibros as $book) :?>
