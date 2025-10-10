@@ -97,6 +97,16 @@ $mensage = "No has leido $nombre";
         }
        return $filtrarlibros;
     }
+function filtrarByYear($books, $añoLanzamiento){
+    $filtrarlibros = [];
+
+    foreach ($books as $book){
+        if($book['añoLanzamiento'] === $añoLanzamiento){
+            $filtrarlibros[] = $book;
+        }
+    }
+    return $filtrarlibros;
+}
 ?>
 <ul>
     <?php foreach (filtrarAutor($books, 'Stephen King') as $book) :?>
