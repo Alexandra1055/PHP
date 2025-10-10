@@ -16,52 +16,6 @@
 </head>
 <body>
 <h1>
-
-    <?php
-    /* Las Variables pueden hacerse con $nombreVariable*/
-      //  $saludo = "Hola";
-    /* Si usamos comilla simple, ' ', el texto aparece tal cual, con las comillas dobles interpreta lo que le pasamos*/
-       // echo $saludo . " mundo";
-    /* Es importante la refactorizacion del codigo para que ssea limpio*/
-    ?>
-</h1>
-<?php
-$nombre = "Dark Matter";
-$read = false;
-$mensage = "No has leido $nombre";
-/*if ($read){
-    $mensage = "No has leido $nombre";
-}else{
-    $mensage = "Has leido $nombre";
-}*/
-?>
-<h1>
-    <!--?php echo es lo mismo que usar solo ?=, asi es mas rapido -->
-    ¿Has leido "<?php echo $nombre; ?>"?
-    <?= $mensage ?>;
-</h1>
-
-<h1> Arrays: Libros recomendados</h1>
-<?php
-
-    $books = [
-            "Harry Potter",
-        "IT",
-        "La torre oscura"
-    ];
-    ?>
-<ul>
-    <?php
-    /*foreach ($books as $book) {
-        echo "<li>$book</li>";*/
-        //Abreviatura
-        foreach ($books as $book) :?>
-    <li><?php echo $book; // se puede abreviar mas?>
-    <?= $book //esto seria mas abreviado?></li>
-    <?php endforeach; ?>
-
-</ul>
-<h1>
     Arrays asociattivas
 </h1>
 
@@ -87,7 +41,8 @@ $mensage = "No has leido $nombre";
       ]//una array puede contener otras arrays, => es una matriz asociativa, asocia una clave con un valor
     ];
 
-    function filtrarAutor($books, $autor){
+    //podemos Crear funciones con nombre o anonimas
+   $filtrarAutor = function ($books, $autor){
         $filtrarlibros = [];
 
         foreach ($books as $book){
@@ -96,20 +51,11 @@ $mensage = "No has leido $nombre";
             }
         }
        return $filtrarlibros;
-    }
-function filtrarByYear($books, $añoLanzamiento){
-    $filtrarlibros = [];
-
-    foreach ($books as $book){
-        if($book['añoLanzamiento'] === $añoLanzamiento){
-            $filtrarlibros[] = $book;
-        }
-    }
-    return $filtrarlibros;
-}
+    }; //esto es lo que se conoce por funcion lambda
+$filtrarlibros = filtrarAutor($books, 'J.K. Rowling');
 ?>
 <ul>
-    <?php foreach (filtrarAutor($books, 'Stephen King') as $book) :?>
+    <?php foreach ($filtrarlibros as $book) :?>
     <?php if ($book['autor']==='Stephen King'): //importante usar el triple = para comparar?>
     <li>
         <a href="<?= $book['UrlCompra'] ?>">
