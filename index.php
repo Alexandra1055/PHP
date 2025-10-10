@@ -55,11 +55,11 @@
 $filtrarlibros = filtrarAutor($books, 'J.K. Rowling');*/
 
 //funciones mas genericas
-function filtrar ($items, $key, $value){
+function filtrar ($items, $fn){ // con fn , que es como si dijera funcion, puedo hacer lo mismo que KEY/VALUE
     $filtrarItems = [];
 
     foreach ($items as $item){
-        if(item[$key] === $value){
+        if($fn($item)){
             $filtrarItems[] = $item;
         }
     }
@@ -67,7 +67,7 @@ function filtrar ($items, $key, $value){
 };
 
 $filtrarlibros = filtrar($books, function ($book){
-    return $book['añoLanzamiento'] === 1999;
+    return $book['añoLanzamiento'] > 1999;
 });
 ?>
 <ul>
