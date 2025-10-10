@@ -1,5 +1,7 @@
 
 <?php
+//este seria el archivo que hace las peticiones a api o bd
+
 $books = [
         [
                 'nombre' => 'Harry Potter y la piedra filosofal',
@@ -55,35 +57,6 @@ $filtrarlibros = array_filter($books, function ($book){
     return $book['añoLanzamiento'] > 1999;
 });
 
-?>
+//la etiqueta de cierre "? >" es redundante porque solo hay php en este documento,por lo que no necesitamos cerrarlo
 
-<!doctype html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Document</title>
-    <style>
-        body{
-            display: grid;
-            place-content: center;
-            height: 100vh;
-            margin: 0;
-            font-family: sans-serif;
-        }
-    </style>
-</head>
-<body>
-<ul>
-    <?php foreach ($filtrarlibros as $book) :?>
-    <?php if ($book['autor']==='Stephen King'): //importante usar el triple = para comparar?>
-    <li>
-        <a href="<?= $book['UrlCompra'] ?>">
-            <?=$book['nombre']; ?> (<?= $book['añoLanzamiento']; ?>) - By <?= $book['autor']; ?>
-        </a>
-    </li>
-    <?php endif;?>
-    <?php endforeach; ?>
-</ul>
-</body>
-</html>
+require "index.view.php"; //para cargar los archivos de otro fichero
