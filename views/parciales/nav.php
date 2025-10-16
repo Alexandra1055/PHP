@@ -23,3 +23,4 @@
         <a href="#" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Log in <span aria-hidden="true">&rarr;</span></a>
     </div>
 </nav>
+</header>
