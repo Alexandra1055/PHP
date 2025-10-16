@@ -16,15 +16,10 @@
     </style>
 </head>
 <body>
+<h1><?= $negocio['name']    ?></h1>
 <ul>
-    <?php foreach ($filtrarlibros as $book) :?>
-        <?php if ($book['autor']==='Stephen King'): //importante usar el triple = para comparar?>
-            <li>
-                <a href="<?= $book['UrlCompra'] ?>">
-                    <?=$book['nombre']; ?> (<?= $book['añoLanzamiento']; ?>) - By <?= $book['autor']; ?>
-                </a>
-            </li>
-        <?php endif;?>
+    <?php foreach ($negocio['categories'] as $category): ?>
+    <li><?= $category; ?></li>
     <?php endforeach; ?>
 </ul>
 </body>
