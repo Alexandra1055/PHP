@@ -1,13 +1,4 @@
 <?php
-
-$negocio = [
-        'name' => 'Laracasts',
-        'cost' => 15,
-        'categories' => ["Testing","PHP","JavaScript"]
-];
-
-function registro($usuario){
-
-}
+$heading = 'Contacto con nosotros';
 
 require "views/contacto.view.php";

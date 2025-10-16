@@ -1,13 +1,5 @@
 <?php
 
-$negocio = [
-        'name' => 'Laracasts',
-        'cost' => 15,
-        'categories' => ["Testing","PHP","JavaScript"]
-];
-
-function registro($usuario){
-
-}
+$heading = 'About Us';
 
 require "views/about.view.php";
