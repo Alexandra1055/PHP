@@ -10,4 +10,4 @@ function registro($usuario){
 
 }
 
-require "contacto.view.php";
+require "views/contacto.view.php";
