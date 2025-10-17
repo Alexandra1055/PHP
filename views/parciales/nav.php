@@ -15,9 +15,9 @@
         </button>
     </div>
     <div class="hidden lg:flex lg:gap-x-12">
-        <a href="/" class="<?= $_SERVER['REQUEST_URI'] === '/' ? 'bg-gray-300 text-white' : 'text-gray-900' ?>-mx-3 block rounded-lg px-3 py-2 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">Home</a>
-        <a href="/about.php" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">About</a>
-        <a href="/contacto.php" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">Contacto</a</div>
+        <a href="/" class="<?= urlIs('/') ? 'bg-gray-300 text-white' : 'text-gray-900' ?>-mx-3 block rounded-lg px-3 py-2 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">Home</a>
+        <a href="/about.php" class="<?= urlIs('/about.php') ? 'bg-gray-300 text-white' : 'text-gray-900' ?>-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">About</a>
+        <a href="/contacto.php" class="<?= urlIs('/contacto.php') ? 'bg-gray-300 text-white' : 'text-gray-900' ?>-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">Contacto</a>
     </div>
     <div class="hidden lg:flex lg:flex-1 lg:justify-end">
         <a href="#" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Log in <span aria-hidden="true">&rarr;</span></a>
