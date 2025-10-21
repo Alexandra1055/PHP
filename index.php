@@ -5,20 +5,16 @@ require 'functions.php';
 require 'router.php';
 
 //conectamos nuestra MySQL database
+$dsn = "mysql:host=localhost;port=3306;dbname=myapp;user=root;charset=utf8mb4";
 
-class Person {
-    public $name;
-    public $age;
+$pdo= new PDO($dsn);
 
-    public function respirar() //la visibilidad predeterminada es public pero mejor ponerlo siempre
-    {
-        echo $this->name . ' esta respirando';
-    }
+$declaracion= $pdo->prepare("SELECT * FROM posts");
+
+$declaracion->execute();
+
+$posts = $declaracion->fetchAll(PDO::FETCH_ASSOC);
+
+foreach ($posts as $post) {
+    echo "<li>" . $post['title'] . "</li>";
 }
-
-$person = new Person();
-
-$person->name = "Alexandra"; //Al hacer referencia a una propiedad no uso el $
-$person->age = 31;
-
-dd($person->respirar());
