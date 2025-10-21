@@ -9,12 +9,17 @@ require 'functions.php';
 //conectamos nuestra MySQL database y ejecutamos una consulta y la construimos(RECORDAR __)
 
 class DataBase{
-    public function query($query){
+
+    public $conexion
+    public function __construct(){
         $dsn = "mysql:host=localhost;port=3306;dbname=myapp;user=root;charset=utf8mb4";
 
-        $pdo= new PDO($dsn);
+        $this-> conexion= new PDO($dsn);
+    }
+    public function query($query){
 
-        $declaracion= $pdo->prepare($query);
+
+        $declaracion= $this-> conexion->prepare($query);
 
         $declaracion->execute();
 
