@@ -6,8 +6,8 @@
             <?php require('parciales/banner.php') ?>
             <div class="text-center">
                 <p>Hola desde Contacto</p>
-                </div>
             </div>
         </div>
     </main>
+
 <?php require('parciales/footer.php') ?>

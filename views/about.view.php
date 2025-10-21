@@ -6,7 +6,6 @@
             <?php require('parciales/banner.php') ?>
             <div class="text-center">
                 <p>Hola desde About</p>
-                </div>
             </div>
         </div>
     </main>

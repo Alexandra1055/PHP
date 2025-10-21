@@ -8,6 +8,5 @@
                     <p>Hola desde mi pagina principal</p>
                 </div>
             </div>
-        </div>
     </main>
 <?php require('parciales/footer.php') ?>
