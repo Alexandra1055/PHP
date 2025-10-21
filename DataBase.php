@@ -5,9 +5,22 @@ class DataBase{
 
     public $conexion;
     public function __construct(){
-        $dsn = "mysql:host=localhost;port=3306;dbname=myapp;user=root;charset=utf8mb4";
+       // TODO esto es muy rigido, por lo quees mejor hacerlo mas flexible $dsn = "mysql:host=localhost;port=3306;dbname=myapp;user=root;charset=utf8mb4";
 
-        $this-> conexion= new PDO($dsn);
+        $config = [
+          'host' => 'localhost',
+          'port' => '3306',
+          'dbname' => 'myapp',
+          'charset' => 'utf8mb4'
+        ];
+
+        http_build_query($data); //example.com?host=localhost?port=3306&dbname=myapp..
+
+        $dsn = "mysql:host={$config['host']};port={$config['port']};dbname={$config['dbname']};charset={$config['charset']}";
+
+        $this-> conexion= new PDO($dsn, 'root','',[
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+        ]);
     }
     public function query($query){
 

@@ -9,6 +9,6 @@ require 'functions.php';
 require 'DataBase.php';
 
 $db = new DataBase();
-$posts =$db->query("SELECT * FROM posts where id=1")->fetchAll(PDO::FETCH_ASSOC);
+$posts =$db->query("SELECT * FROM posts where id=1")->fetchAll();
 
 dd($posts['title']);
