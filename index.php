@@ -12,6 +12,10 @@ $config = require('config.php');
 
 $db = new DataBase($config['database']);
 
-$posts =$db->query("SELECT * FROM posts where id=1")->fetchAll();
+//hagamos mas seguro nuestro codigo para evitar que nos puedan eliminar datos de la db
+$id = $_GET['id'];
+$query = "select * from posts where id = ?"; //en lugar de declarar la variable, usamos ? o :id o cualquier cosa
 
-dd($posts['title']);
+$posts =$db->query($query,[$id])->fetch(); //si usamos ? no se pasa, pero si usamos :id pondremos [':id' => $id]
+
+dd($posts[]);

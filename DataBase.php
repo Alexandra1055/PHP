@@ -13,12 +13,12 @@ class DataBase{
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
         ]);
     }
-    public function query($query){
+    public function query($query, $params = []){
 
 
         $declaracion= $this-> conexion->prepare($query);
 
-        $declaracion->execute();
+        $declaracion->execute($params);
 
         return $declaracion;
     }
