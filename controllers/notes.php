@@ -1,12 +1,13 @@
 <?php
+// controllers/notes.php
 
-
-$config = require('config.php');
+require_once __DIR__ . '/../DataBase.php';
+$config = require __DIR__ . '/../config.php';
 
 $db = new DataBase($config['database']);
 
 $heading = 'My Notes';
 
-$notes= $db->query('SELECT * FROM notes WHERE user_id = 1') -> get();
+$notes = $db->query('SELECT * FROM notes WHERE user_id = 1')->get();
 
-require "views/notes.view.php";
+require __DIR__ . '/../views/notes.view.php';
