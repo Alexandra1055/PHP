@@ -1,19 +1,19 @@
 <?php
+require  'DataBase.php';
+require 'Validator.php';
+// require ('Validator.php'); se puede usar uno u otro, sirven igual
+
 $heading = 'Crear Nota';
 
 $config = require ('config.php');
 
 $db = new DataBase($config['database']);
 
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $errors = [];
-
-    if(strlen($_POST['body']) == 0){ //strlen longiud
-        $errors['body'] = 'El texto es obligatorio';
-    }
-
-    if(strlen($_POST['body']) > 1000){ //maximo de caracters
-        $errors['body'] = 'El texto no puede superar los 1000 caracteres';
+    //como es una funcion saica podemos llamarlo asi en lugar de darle un valor antes
+    if(!Validator::string($_POST['body'],1,1000)){ //strlen longiud
+        $errors['body'] = 'El texto debe tener maximo 1000 caracteres';
     }
 
     if(empty($errors)){
