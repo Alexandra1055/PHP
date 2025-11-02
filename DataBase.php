@@ -4,6 +4,7 @@
 class DataBase{
 
     public $conexion;
+    public $statement;
     public function __construct($config, $username = 'root', $password = ''){
        // TODO esto es muy rigido, por lo quees mejor hacerlo mas flexible $dsn = "mysql:host=localhost;port=3306;dbname=myapp;user=root;charset=utf8mb4";
 
@@ -16,10 +17,14 @@ class DataBase{
     public function query($query, $params = []){
 
 
-        $declaracion= $this-> conexion->prepare($query);
+        $this-> statement = $this-> conexion->prepare($query);
 
-        $declaracion->execute($params);
+        $this-> statement ->execute($params);
 
-        return $declaracion;
+        return $this;
+    }
+
+    public function find(){
+        return $this-> statement -> fetch();
     }
 }
