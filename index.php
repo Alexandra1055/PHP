@@ -4,8 +4,8 @@ require 'functions.php';
 
 require 'router.php';
 
-require 'DataBase.php';
+require 'Database.php';
 
 $config = require('config.php');
 
-$db = new DataBase($config['database']);
+$db = new Database($config['database']);

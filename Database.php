@@ -1,7 +1,7 @@
 <?php
 //conectamos nuestra MySQL database y ejecutamos una consulta y la construimos(RECORDAR __)
 
-class DataBase{
+class Database{
 
     public $conexion;
     public $statement;

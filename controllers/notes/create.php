@@ -1,18 +1,17 @@
 <?php
-require  'DataBase.php';
+require 'Database.php';
 require 'Validator.php';
 // require ('Validator.php'); se puede usar uno u otro, sirven igual
 
+$config = require 'config.php';
+$db = new Database($config['database']);
+
 $heading = 'Crear Nota';
-
-$config = require ('config.php');
-
-$db = new DataBase($config['database']);
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $errors = [];
     //como es una funcion saica podemos llamarlo asi en lugar de darle un valor antes
-    if(!Validator::string($_POST['body'],1,1000)){ //strlen longiud
+    if(! Validator::string($_POST['body'],1,1000)){ //strlen longiud
         $errors['body'] = 'El texto debe tener maximo 1000 caracteres';
     }
 
@@ -24,4 +23,4 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     }
 }
 
-require 'views/note-create.view.php';
+require 'views/notes/create.view.php';
