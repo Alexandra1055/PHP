@@ -6,10 +6,10 @@ require 'Validator.php';
 $config = require 'config.php';
 $db = new Database($config['database']);
 
-$heading = 'Crear Nota';
+$errors = [];
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    $errors = [];
+
     //como es una funcion saica podemos llamarlo asi en lugar de darle un valor antes
     if(! Validator::string($_POST['body'],1,1000)){ //strlen longiud
         $errors['body'] = 'El texto debe tener maximo 1000 caracteres';
@@ -23,4 +23,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     }
 }
 
-require 'views/notes/create.view.php';
+view("notes/create.view.php", [
+    'heading' => 'Crear nota',
+    'errors' => $errors
+]);
