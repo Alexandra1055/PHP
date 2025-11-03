@@ -5,7 +5,7 @@
         <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
             <?php require base_path('views/parciales/banner.php') ?>
             <div class="text-center">
-                <form method="POST">
+                <form method="POST" action="/notes">
                     <div class="space-y-12">
                         <div class="border-b border-white/10 pb-12">
                             <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
