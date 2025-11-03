@@ -1,5 +1,6 @@
 <?php
-return [
+/*
+ return [
     '/'=> 'controllers/index.php',
     '/about'=> 'controllers/about.php',
     '/notes'=> 'controllers/notes/index.php',
@@ -7,3 +8,13 @@ return [
     '/notes/create'=> 'controllers/notes/create.php',
     '/contacto'=> 'controllers/contacto.php',
 ];
+
+ */
+
+$router->get('/', 'controllers/index.php');
+$router->get('/about', 'controllers/about.php');
+$router->get('/contacto', 'controllers/contacto.php');
+
+$router->get('/notes', 'controllers/notes/index.php');
+$router->get('/note', 'controllers/notes/show.php');
+$router->get('/notes/create', 'controllers/notes/create.php');
