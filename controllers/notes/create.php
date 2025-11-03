@@ -1,6 +1,6 @@
 <?php
-require 'Database.php';
-require 'Validator.php';
+use Core\Database;
+use Core\Validator;
 // require ('Validator.php'); se puede usar uno u otro, sirven igual
 
 $config = require 'config.php';

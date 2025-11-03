@@ -1,4 +1,6 @@
 <?php
+use Core\Database; //esto seria un alias de la ruta que quiero usar
+
 $config = require base_path('config.php');
 $db = new Database($config['database']);
 

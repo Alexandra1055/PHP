@@ -1,4 +1,5 @@
 <?php
+namespace Core;
 
 class Validator { // son funciones puras, porque no dependen de nada por lo que podemos hacerlas staticas
     public static function string($value, $min = 1, $max = INF){
