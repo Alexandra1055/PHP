@@ -1,6 +1,7 @@
 <?php
 //archivo para hacer pruebas
 
+use Core\App;
 use Core\Container;
 use Core\Database;
 
@@ -12,4 +13,6 @@ $container ->bind('Core\Database', function (){
 
 });
 
-$db = $container -> resolve('Core\Database');
+App::setContainer($container);
+
+//$db = $container -> resolve('Core\Database');
