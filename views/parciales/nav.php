@@ -3,7 +3,6 @@
         <a href="#" class="-m-1.5 p-1.5">
             <span class="sr-only">Your Company</span>
             <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600" alt="" class="h-8 w-auto dark:hidden" />
-            <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500" alt="" class="h-8 w-auto not-dark:hidden" />
         </a>
     </div>
     <div class="flex lg:hidden">
@@ -21,7 +20,11 @@
         <a href="/contacto" class="<?= urlIs('/contacto') ? 'bg-gray-300 text-white' : 'text-gray-900' ?>-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">Contacto</a>
     </div>
     <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-        <a href="#" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Log in <span aria-hidden="true">&rarr;</span></a>
+        <?php if($_SESSION['user'] ?? false) :?>
+            <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500" alt="" class="h-8 w-8 not-dark:hidden rounded-full" />
+        <?php else : ?>
+            <a href="/register" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Registrate <span aria-hidden="true">&rarr;</span></a>
+        <?php endif; ?>
     </div>
 </nav>
 </header>

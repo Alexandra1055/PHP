@@ -14,7 +14,7 @@ class Container
             throw new \Exception('No se encontro un enlace para su clave: ' . $key);
         }
         $resolver = $this->bindings[$key];
-        returncall_user_func($resolver);
+        return call_user_func($resolver);
 
     }
 }
