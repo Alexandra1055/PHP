@@ -1,6 +1,7 @@
 <?php
 
 use Core\Authenticator;
+use Core\Session;
 use Http\Forms\LoginForm;
 
 $email = $_POST["email"];
@@ -17,9 +18,8 @@ if($form->validate($email,$password)){
     $form -> error('email','No se ha encontrado una cuenta con ese correo o contraseña');
 }
 
-return view('session/create.view.php', [
-    'errors' => $form->errors()
-]);
+Session::flash('error',$form -> errors());
+return redirect('/login');
 
 
 

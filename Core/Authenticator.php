@@ -30,13 +30,6 @@ class Authenticator{
     }
 
     public function logout(){
-        $_SESSION=[]; //vaciamos
-
-        session_destroy(); //destruimos el archivo de sesion
-
-        $params = session_get_cookie_params(); //esto devuelve una array con la ruta y el domino de la sesion
-        setcookie('PHPSESSID', '', time() - 3600, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
-//tiempo menos 1h, solo lo estas situando en el pasado. Podriamos omitir serure y httponly si queremos
-
+      Session::destroy();
     }
 }

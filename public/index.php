@@ -1,4 +1,7 @@
 <?php
+
+use Core\Session;
+
 session_start();
 const BASE_PATH = __DIR__ . '/../';
 
@@ -21,3 +24,5 @@ $uri = parse_url($_SERVER['REQUEST_URI'])['path'];
 $method = $_POST['method'] ?? $_SERVER['REQUEST_METHOD']; //operador ternario nuevo
 
 $router -> route($uri, $method);
+
+Session::unflash();
