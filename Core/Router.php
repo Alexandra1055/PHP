@@ -52,6 +52,10 @@ class Router{
         $this -> abort();
     }
 
+    public function previusUrl(){
+        return $_SERVER['HTTP_REFERER'];
+    }
+
     public function only($key){
         $this-> routes[array_key_last($this->routes)]['middleware'] = $key; //array_key_last: para coger la ultima añadida al array
         return $this;

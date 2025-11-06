@@ -23,6 +23,13 @@ $uri = parse_url($_SERVER['REQUEST_URI'])['path'];
 
 $method = $_POST['method'] ?? $_SERVER['REQUEST_METHOD']; //operador ternario nuevo
 
-$router -> route($uri, $method);
+try{
+    $router -> route($uri, $method);
+} catch (Exception $exception){
+    Session::flash('error',$exception->errors);
+    Session::flash('old',$exception->old);
+
+    return redirect($router->previusUrl());
+}
 
 Session::unflash();
