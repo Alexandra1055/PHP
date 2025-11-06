@@ -16,7 +16,9 @@
     <div class="hidden lg:flex lg:gap-x-12">
         <a href="/" class="<?= urlIs('/') ? 'bg-gray-300 text-white' : 'text-gray-900' ?>-mx-3 block rounded-lg px-3 py-2 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">Home</a>
         <a href="/about" class="<?= urlIs('/about') ? 'bg-gray-300 text-white' : 'text-gray-900' ?>-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">About</a>
-        <a href="/notes" class="<?= urlIs('/notes') ? 'bg-gray-300 text-white' : 'text-gray-900' ?>-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">Notes</a>
+        <?php if($_SESSION['user'] ?? false) :?>
+            <a href="/notes" class="<?= urlIs('/notes') ? 'bg-gray-300 text-white' : 'text-gray-900' ?>-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">Notes</a>
+        <?php endif; ?>
         <a href="/contacto" class="<?= urlIs('/contacto') ? 'bg-gray-300 text-white' : 'text-gray-900' ?>-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">Contacto</a>
     </div>
     <div class="hidden lg:flex lg:flex-1 lg:justify-end">
@@ -27,5 +29,15 @@
             <a href="/login" class="<?= urlIs('/login') ? 'bg-gray-300 text-white' : 'text-gray-900' ?>-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">Log in</a>
         <?php endif; ?>
     </div>
+    <?php if($_SESSION['user'] ?? false) :?>
+    <div class="ml-3">
+        <form method="POST" action="/session">
+            <input type="hidden" name="_method" value="DELETE">
+            <button class="mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">Log out</button>
+        </form>
+        <a href="/logout" class="<?= urlIs('/logout') ? 'bg-gray-300 text-white' : 'text-gray-900' ?>-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">Log out</a>
+    </div>
+    <?php endif; ?>
+
 </nav>
 </header>

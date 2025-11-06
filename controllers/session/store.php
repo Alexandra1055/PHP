@@ -20,7 +20,7 @@ if(! Validator::string($password,7,255)) {
 }
 
 if(! empty($errors)) {
-    return view('sessions/create.view.php',[
+    return view('session/create.view.php',[
         "errors" => $errors
     ]);
 }
@@ -41,7 +41,7 @@ if($user) {
 
 
 
-return view('sessions/create.view.php',[
+return view('session/create.view.php',[
     'errors' => [
         'email' => ['No se encontro un correo para este usuario']
     ]
