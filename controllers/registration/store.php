@@ -35,7 +35,7 @@ if($user) {
 }else{
     $db->query('insert into users(email, password) values (:email, :password)', [
         'email' => $email,
-        'password' => $password
+        'password' => password_hash($password,PASSWORD_BCRYPT) //pasamos el valor y el algoritmo de encriptacion, por defecto es BCRYPT pero por si cambia lo marcamos nosotros
     ]);
 
     $_SESSION['user']= [
