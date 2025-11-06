@@ -23,7 +23,8 @@
         <?php if($_SESSION['user'] ?? false) :?>
             <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500" alt="" class="h-8 w-8 not-dark:hidden rounded-full" />
         <?php else : ?>
-            <a href="/register" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Registrate <span aria-hidden="true">&rarr;</span></a>
+            <a href="/register" class="<?= urlIs('/register') ? 'bg-gray-300 text-white' : 'text-gray-900' ?>-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">Registrar</a>
+            <a href="/login" class="<?= urlIs('/login') ? 'bg-gray-300 text-white' : 'text-gray-900' ?>-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">Log in</a>
         <?php endif; ?>
     </div>
 </nav>

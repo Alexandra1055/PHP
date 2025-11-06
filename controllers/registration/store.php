@@ -4,6 +4,8 @@ use Core\App;
 use Core\Database;
 use Core\Validator;
 
+$db= App::resolve(Database::class);
+
 $email = $_POST["email"];
 $password = $_POST["password"];
 
@@ -22,7 +24,6 @@ if(! empty($errors)) {
     ]);
 }
 
-$db= App::resolve(Database::class);
 
 $user = $db->query('select * from users where email = :email', [
     'email' => $email
@@ -38,9 +39,8 @@ if($user) {
         'password' => password_hash($password,PASSWORD_BCRYPT) //pasamos el valor y el algoritmo de encriptacion, por defecto es BCRYPT pero por si cambia lo marcamos nosotros
     ]);
 
-    $_SESSION['user']= [
-        'email' => $email
-    ];
+    login([$user]);
+
     header('location: /');
     exit();
 }
