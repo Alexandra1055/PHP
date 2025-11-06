@@ -1,0 +1,16 @@
+{
+    "name": "alexandra/demo",
+    "authors": [
+        {
+            "name": "alexandra",
+            "email": "agonzalez1055@alumnes.politecnicllevant.cat"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+          "Core\\": "Core/",
+          "Http\\": "Http/"
+        }
+    }
+}
