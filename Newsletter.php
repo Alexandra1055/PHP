@@ -3,9 +3,12 @@ class User{
 
 }
 class Newsletter{
-    public function subscribe(User $user, NewsletterProvider $provider){
+    public function __construct(public NewsletterProvider $provider){
+        $this->provider = $provider;
+    }
+    public function subscribe(User $user){
 
-        $provider->addToList('default', $user->email);
+        $this->provider->addToList('default', $user->email);
         //Actualiza el usuario y lo marca como suscrito
         $user->update(['suscribed' => true]);
 
@@ -35,5 +38,13 @@ class PostmarkProvider implements NewsletterProvider {
     }
 }
 
-$newsletter = new Newsletter();
+/*
+$newsletter = new Newsletter(
+    new PostmarkProvider()
+);
+*/
+
+$newsletter = new Newsletter(
+    new CampaingMonitor()
+);
 $newsletter->subscribe(new User());
