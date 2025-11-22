@@ -1,6 +1,6 @@
 <?php
 
-view("notes/create.view.php", [
-    'heading' => 'Crear nota',
-    'errors' => []
-]);
+use Http\controllers\NotesController;
+
+$controller = new NotesController();
+$controller->create();

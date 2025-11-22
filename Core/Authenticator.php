@@ -14,7 +14,7 @@ class Authenticator{
         if($user) {
             //para verificar nuestra contraseña encriptada
             if(password_verify($password, $user['password'])) {
-                $this->login(['email' => $email]);
+                $this->login($user);
 
                 return true;
             }
@@ -23,6 +23,7 @@ class Authenticator{
     }
     public function login($user){
         $_SESSION['user']= [
+            'id' => $user['id'],
             'email' => $user['email']
         ];
 
@@ -31,5 +32,10 @@ class Authenticator{
 
     public function logout(){
       Session::destroy();
+    }
+
+    public function currentUserId(): ?int
+    {
+        return Session::get('user')['id'] ?? null;
     }
 }

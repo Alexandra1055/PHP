@@ -1,20 +1,8 @@
 <?php
 use Core\App;
 use Core\Database;
+use Http\controllers\NotesController;
 
-$db = App::resolve(Database::class);
-
-$currentUserId = 1;
-
-$note = $db->query('select * from notes where id = :id', [
-    'id' => $_GET['id']
-])->findOrFail();
-
-
-authorize($note['user_id'] == $currentUserId);
-
-view("notes/index.view.php", [
-    'heading' => 'Nota',
-    'note' => $note,
-]);
+$controller = new NotesController();
+$controller->show();
 
