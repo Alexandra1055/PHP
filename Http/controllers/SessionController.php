@@ -4,6 +4,7 @@ namespace Http\controllers;
 
 use Core\ApiToken;
 use Core\Authenticator;
+use Core\Response;
 
 class SessionController
 {
@@ -47,13 +48,13 @@ class SessionController
 
         $token = $this->tokens->generateForUser($userId);
 
-        json_response([
+        Response::json([
             'token' => $token,
             'user'  => [
                 'id'    => $userId,
                 'email' => $email,
             ],
-        ]);
+        ]); //devolvemos el token y los datos del usuario
     }
 
     // POST /api/session/logout

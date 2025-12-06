@@ -2,10 +2,10 @@
 
 namespace Http\controllers\notes;
 
-use Core\App;
 use Core\Authenticator;
 use Core\ApiToken;
 use Core\DAO\NoteDaoFactory;
+use Core\Response;
 use Core\Validator;
 
 class NotesController
@@ -26,15 +26,14 @@ class NotesController
         return is_api_request();
     }
 
-    private function requireAuth(): void //verificamos que el usuario este autenticado
-    {
+    private function requireAuth(): void{// Verificamos que el usuario esté autenticado
         if ($this->isApi()) {
             $tokenService = new ApiToken();
             $token        = get_bearer_token();
             $userId       = $tokenService->userIdFromToken($token);
 
             if (!$userId) {
-                json_response(['error' => 'Token inválido o no proporcionado'], 401);
+                Response::json(['error' => 'Token inválido o no proporcionado'], Response::UNAUTHORIZED);
             }
 
             $this->currentUserId = $userId;
@@ -45,25 +44,24 @@ class NotesController
         }
     }
 
-    private function authorizeNoteOwner(array $note): void //verificamos que la nota pertenezca al usuario logeado
-    {
+
+    private function authorizeNoteOwner(array $note): void{// Verificamos que la nota pertenezca al usuario logueado
         if ($note['user_id'] != $this->currentUserId) {
             if ($this->isApi()) {
-                json_response(['error' => 'No autorizado'], 403);
+                Response::json(['error' => 'No autorizado'], Response::FORBIDDEN);
             } else {
                 authorize(false);
             }
         }
     }
 
-    public function index(): void //get
-    {
+    public function index(): void{//GET /notes y GET /api/notes
         $this->requireAuth();
 
         $notes = $this->noteDao->getAllByUserId($this->currentUserId);
 
         if ($this->isApi()) {
-            json_response(['notes' => $notes]);
+            Response::json(['notes' => $notes]);
         } else {
             view("notes/index.view.php", [
                 'heading' => 'Mis Notas',
@@ -72,17 +70,16 @@ class NotesController
         }
     }
 
-    public function show(): void //get
-    {
+    public function show(): void{//GET /note y GET /api/note
         $this->requireAuth();
 
         $id = (int)($_GET['id'] ?? 0);
 
         if ($id === 0) {
             if ($this->isApi()) {
-                json_response(['error' => 'ID requerido'], 400);
+                Response::json(['error' => 'ID requerido'], Response::BAD_REQUEST);
             } else {
-                abort(404);
+                abort(Response::NOT_FOUND);
             }
             return;
         }
@@ -91,9 +88,9 @@ class NotesController
 
         if (!$note) {
             if ($this->isApi()) {
-                json_response(['error' => 'Nota no encontrada'], 404);
+                Response::json(['error' => 'Nota no encontrada'], Response::NOT_FOUND);
             } else {
-                abort(404);
+                abort(Response::NOT_FOUND);
             }
             return;
         }
@@ -101,7 +98,7 @@ class NotesController
         $this->authorizeNoteOwner($note);
 
         if ($this->isApi()) {
-            json_response(['note' => $note]);
+            Response::json(['note' => $note]);
         } else {
             view("notes/show.view.php", [
                 'heading' => 'Nota',
@@ -110,12 +107,11 @@ class NotesController
         }
     }
 
-    public function create(): void //get formulario html
-    {
+    public function create(): void{//GET /notes/create HTML
         $this->requireAuth();
 
         if ($this->isApi()) {
-            json_response(['error' => 'No disponible en API'], 405);
+            Response::json(['error' => 'No disponible en API'], 405);
         }
 
         view('notes/create.view.php', [
@@ -124,8 +120,7 @@ class NotesController
         ]);
     }
 
-    public function store(): void //post
-    {
+    public function store(): void{//POST /notes y POST /api/notes
         $this->requireAuth();
 
         if ($this->isApi()) {
@@ -144,7 +139,7 @@ class NotesController
 
         if (!empty($errors)) {
             if ($this->isApi()) {
-                json_response(['errors' => $errors], 422);
+                Response::json(['errors' => $errors], 422);
             } else {
                 view('notes/create.view.php', [
                     'heading' => 'Crear nota',
@@ -157,28 +152,27 @@ class NotesController
         $this->noteDao->create($body, $this->currentUserId);
 
         if ($this->isApi()) {
-            json_response(['message' => 'Nota creada correctamente'], 201);
+            Response::json(['message' => 'Nota creada correctamente'], 201);
         } else {
             redirect('/notes');
         }
     }
 
-    public function edit(): void //get formulario html
-    {
+    public function edit(): void{//GET /note/edit HTML
         $this->requireAuth();
 
         if ($this->isApi()) {
-            json_response(['error' => 'No disponible en API'], 405);
+            Response::json(['error' => 'No disponible en API'], 405);
         }
 
         $id = (int)($_GET['id'] ?? 0);
         if ($id === 0) {
-            abort(404);
+            abort(Response::NOT_FOUND);
         }
 
         $note = $this->noteDao->findById($id);
         if (!$note) {
-            abort(404);
+            abort(Response::NOT_FOUND);
         }
 
         $this->authorizeNoteOwner($note);
@@ -190,8 +184,7 @@ class NotesController
         ]);
     }
 
-    public function update(): void //put o patch
-    {
+    public function update(): void{//PATCH /note y PUT/PATCH /api/note
         $this->requireAuth();
 
         if ($this->isApi()) {
@@ -206,9 +199,9 @@ class NotesController
 
         if ($id === 0) {
             if ($this->isApi()) {
-                json_response(['error' => 'ID requerido'], 400);
+                Response::json(['error' => 'ID requerido'], Response::BAD_REQUEST);
             } else {
-                abort(404);
+                abort(Response::NOT_FOUND);
             }
             return;
         }
@@ -216,9 +209,9 @@ class NotesController
         $note = $this->noteDao->findById($id);
         if (!$note) {
             if ($this->isApi()) {
-                json_response(['error' => 'Nota no encontrada'], 404);
+                Response::json(['error' => 'Nota no encontrada'], Response::NOT_FOUND);
             } else {
-                abort(404);
+                abort(Response::NOT_FOUND);
             }
             return;
         }
@@ -233,7 +226,7 @@ class NotesController
 
         if (!empty($errors)) {
             if ($this->isApi()) {
-                json_response(['errors' => $errors], 422);
+                Response::json(['errors' => $errors], 422);
             } else {
                 view('notes/edit.view.php', [
                     'heading' => 'Editar nota',
@@ -247,14 +240,13 @@ class NotesController
         $this->noteDao->update($id, $body);
 
         if ($this->isApi()) {
-            json_response(['message' => 'Nota actualizada']);
+            Response::json(['message' => 'Nota actualizada']);
         } else {
             redirect('/notes');
         }
     }
 
-    public function destroy(): void //delete
-    {
+    public function destroy(): void{//DELETE /note y DELETE /api/note
         $this->requireAuth();
 
         if ($this->isApi()) {
@@ -271,9 +263,9 @@ class NotesController
 
         if ($id === 0) {
             if ($this->isApi()) {
-                json_response(['error' => 'ID requerido'], 400);
+                Response::json(['error' => 'ID requerido'], Response::BAD_REQUEST);
             } else {
-                abort(404);
+                abort(Response::NOT_FOUND);
             }
             return;
         }
@@ -281,9 +273,9 @@ class NotesController
         $note = $this->noteDao->findById($id);
         if (!$note) {
             if ($this->isApi()) {
-                json_response(['error' => 'Nota no encontrada'], 404);
+                Response::json(['error' => 'Nota no encontrada'], Response::NOT_FOUND);
             } else {
-                abort(404);
+                abort(Response::NOT_FOUND);
             }
             return;
         }
@@ -293,7 +285,7 @@ class NotesController
         $this->noteDao->delete($id);
 
         if ($this->isApi()) {
-            json_response(['message' => 'Nota eliminada']);
+            Response::json(['message' => 'Nota eliminada']);
         } else {
             redirect('/notes');
         }

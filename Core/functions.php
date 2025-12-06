@@ -43,3 +43,7 @@ function redirect($path){
 function old($key, $default = ''){
     return \Core\Session::get('old')[$key] ?? $default;
 }
+
+function json_response($data, int $status = 200): void{
+    Response::json($data, $status);
+}
