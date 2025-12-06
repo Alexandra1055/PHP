@@ -1,6 +1,8 @@
 <?php
 
 use Core\Session;
+use Core\ValidatonException;
+use Core\Response;
 
 
 const BASE_PATH = __DIR__ . '/../';
@@ -29,11 +31,19 @@ $uri = parse_url($_SERVER['REQUEST_URI'])['path'];
 
 $method = $_POST['method'] ?? $_SERVER['REQUEST_METHOD']; //operador ternario nuevo
 
-try{
-    $router -> route($uri, $method);
-} catch (Exception $exception){
-    Session::flash('error',$exception->errors);
-    Session::flash('old',$exception->old);
+try {
+    $router->route($uri, $method);
+} catch (ValidatonException $exception) {
+
+    if (is_api_request()) {
+        Response::json([
+            'errors' => $exception->errors,
+            'old' => $exception->old,
+        ], 422);
+    }
+
+    Session::flash('error', $exception->errors);
+    Session::flash('old', $exception->old);
 
     return redirect($router->previusUrl());
 }
