@@ -40,10 +40,16 @@ class Router{
 
     public function route($uri,$method){
         foreach ($this->routes as $route){
-            if($route['uri']==$uri && $route['method'] == strtoupper($method)){
+            if($route['uri']===$uri && $route['method'] == strtoupper($method)){
                 //aplicamos el middleware
                 if($route['middleware']){ //como esta adjudicado como null por defecto, hacemos el if
                     Middleware::resolve($route['middleware']);
+                }
+
+                if (is_array($route['controller'])) {
+                    $controller = new $route['controller'][0]();
+                    $method = $route['controller'][1];
+                    return $controller->$method();
                 }
 
                 return require base_path('Http/controllers/' . $route['controller']);

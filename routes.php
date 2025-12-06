@@ -10,20 +10,22 @@
 ];
 
  */
+use Http\controllers\notes\NotesController;
+$controller = new NotesController();
 
 $router->get('/', 'index.php');
 $router->get('/about', 'about.php');
 $router->get('/contacto', 'contacto.php');
 
-$router->get('/notes', 'notes/index.php')->only('auth');
-$router->get('/note', 'notes/show.php');
-$router->delete('/note', 'notes/destroy.php');
+$router->get('/notes', $controller->index())->only('auth');
+$router->get('/note', $controller->show());
+$router->delete('/note', $controller->destroy());
 
-$router->get('/note/edit', 'notes/edit.php');
-$router->patch('/note', 'notes/update.php');
+$router->get('/note/edit', $controller->edit());
+$router->patch('/note', $controller->update());
 
-$router->get('/notes/create', 'notes/create.php');
-$router->post('/notes', 'notes/store.php');
+$router->get('/notes/create', $controller->create());
+$router->post('/notes', $controller->store());
 
 $router->get('/register', 'registration/create.php')->only('guest');
 $router->post('/register', 'registration/store.php')->only('guest');
