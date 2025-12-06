@@ -7,11 +7,12 @@ use Core\Validator;
 
 class LoginForm{
 
-    public $atributes;
-    protected $errors = [];
+    public array $atributes;
+    protected array $errors = [];
 
-    public function __contruct(array $atributes){
+    public function __construct(array $atributes){
         $this->atributes = $atributes;
+
         if (!Validator::email($atributes['email'])) {
             $this->errors['email'] = 'Por favor, introduzca un correo electronico valido';
         }
@@ -19,20 +20,18 @@ class LoginForm{
             $this->errors['password'] = 'La contraseña no es correcta';
         }
     }
+
     public static function validate($atributes){
         $instance = new static($atributes);
-
-        return $instance -> failed() ? $instance -> throw() : $instance;
-
+        return $instance->failed() ? $instance->throw() : $instance;
     }
 
     public function throw(){
-        ValidationException::throw($this->errors(),$this->atributes);
-
+        ValidatonException::throw($this->errors(), $this->atributes);
     }
 
     public function failed(){
-        return count($this->errors);
+        return count($this->errors) > 0;
     }
 
     public function errors(){
@@ -41,7 +40,6 @@ class LoginForm{
 
     public function error($field, $message){
         $this->errors[$field] = $message;
-
         return $this;
     }
 }
