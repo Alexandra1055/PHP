@@ -13,7 +13,7 @@ class SessionController
 
     public function __construct()
     {
-        $this->auth   = new Authenticator();
+        $this->auth = new Authenticator();
         $this->tokens = new ApiToken();
     }
 
@@ -21,27 +21,32 @@ class SessionController
     public function apiLogin(): void //generamos el token
     {
         if (!is_api_request()) {
-            abort(404);
+            abort(Response::NOT_FOUND);
         }
 
-        $raw  = file_get_contents('php://input');
+        $raw = file_get_contents('php://input');
         $data = json_decode($raw, true);
 
         if (!is_array($data)) {
             $data = $_POST;
-        }
+        } // Si no es JSON válido, miramos en $_POST
 
-        $email    = $data['email']    ?? null;
+        $email = $data['email'] ?? null;
         $password = $data['password'] ?? null;
 
         if (!$email || !$password) {
-            json_response(['error' => 'email y password son obligatorios'], 400);
-        }
+            Response::json(
+                ['error' => 'email y password son obligatorios'],
+                Response::BAD_REQUEST
+            );        }
 
         $signedIn = $this->auth->attempt($email, $password);
 
         if (!$signedIn) {
-            json_response(['error' => 'Credenciales incorrectas'], 401);
+            Response::json(
+                ['error' => 'Credenciales incorrectas'],
+                Response::UNAUTHORIZED
+            );
         }
 
         $userId = $this->auth->currentUserId();
@@ -61,17 +66,20 @@ class SessionController
     public function apiLogout(): void //invalidamos el token
     {
         if (!is_api_request()) {
-            abort(404);
+            abort(Response::NOT_FOUND);
         }
 
         $token = get_bearer_token();
 
         if (!$token) {
-            json_response(['error' => 'Token no proporcionado'], 400);
+            Response::json(
+                ['error' => 'Token no proporcionado'],
+                Response::BAD_REQUEST
+            );
         }
 
         $this->tokens->deleteToken($token);
 
-        json_response(['message' => 'Sesión REST cerrada correctamente']);
+        Response::json(['message' => 'Sesión REST cerrada correctamente']);
     }
 }
