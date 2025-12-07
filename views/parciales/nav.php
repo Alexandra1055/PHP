@@ -31,11 +31,10 @@
     </div>
     <?php if($_SESSION['user'] ?? false) :?>
     <div class="ml-3">
-        <form method="POST" action="/session">
-            <input type="hidden" name="_method" value="DELETE">
+        <form method="post" action="/login">
+            <input type="hidden" name="method" value="DELETE">
             <button class="mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">Log out</button>
         </form>
-        <a href="/logout" class="<?= urlIs('/logout') ? 'bg-gray-300 text-white' : 'text-gray-900' ?>-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">Log out</a>
     </div>
     <?php endif; ?>
 

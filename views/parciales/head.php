@@ -10,8 +10,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
     <style>
         body{
-            display: grid;
-            place-content: center;
             height: 100vh;
             margin: 0;
             font-family: sans-serif;

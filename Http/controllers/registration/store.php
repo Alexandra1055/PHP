@@ -39,8 +39,6 @@ if($user) {
         'password' => password_hash($password,PASSWORD_BCRYPT) //pasamos el valor y el algoritmo de encriptacion, por defecto es BCRYPT pero por si cambia lo marcamos nosotros
     ]);
 
-    login([$user]);
-
     header('location: /');
     exit();
 }

@@ -19,7 +19,7 @@ class ApiToken
             'INSERT INTO api_tokens (user_id, token) VALUES (:user_id, :token)',
             [
                 'user_id' => $userId,
-                'token'   => $token,
+                'token' => $token,
             ]
         );
 
