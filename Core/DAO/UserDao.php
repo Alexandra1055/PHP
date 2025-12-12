@@ -3,7 +3,7 @@
 namespace Core\DAO;
 
 interface UserDao{
-    public function getUserById($id);
-    public function getAllTokens();
+    public function findById(int $id): ?array;
+    public function updateUser(int $id, array $data): void;
 
 }
