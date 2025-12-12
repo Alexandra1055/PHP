@@ -2,6 +2,8 @@
 
 use Http\controllers\notes\NotesController;
 use Http\controllers\SessionController;
+use Http\controllers\UserController;
+
 
 // HTML
 $router->get('/', 'index.php');
@@ -26,13 +28,17 @@ $router->get('/login', 'session/create.php')->only('guest');
 $router->post('/login', 'session/store.php')->only('guest');
 $router->delete('/login', 'session/destroy.php')->only('auth');
 
-// Rest
-$router->post('/api/session',[SessionController::class, 'apiLogin']);
-$router->delete('/api/session',[SessionController::class, 'apiLogout']);
+// Rest API
+$router->post('/api/session', [SessionController::class, 'apiLogin']);
+$router->delete('/api/session', [SessionController::class, 'apiLogout']);
 $router->delete('/api/session/all', [SessionController::class, 'apiLogoutAll']);
 
 $router->post('/api/session/login', [SessionController::class, 'apiLogin']);
 $router->post('/api/session/logout', [SessionController::class, 'apiLogout']);
+
+//user endpoints donde el usuario puede ver y actualizar su propia informacion
+$router->get('/api/users/me', [UserController::class, 'showMe']);
+$router->patch('/api/users/me', [UserController::class, 'updateMe']);
 
 //notas con rest
 $router->get('/api/notes', [NotesController::class, 'index']);
