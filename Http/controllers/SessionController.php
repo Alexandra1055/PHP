@@ -38,7 +38,8 @@ class SessionController
             Response::json(
                 ['error' => 'email y password son obligatorios'],
                 Response::BAD_REQUEST
-            );        }
+            );
+        }
 
         $signedIn = $this->auth->attempt($email, $password);
 
@@ -83,7 +84,7 @@ class SessionController
         Response::json(['message' => 'Sesión REST cerrada correctamente']);
     }
 
-    public function apuiLogoutAll(): void{
+    public function apiLogoutAll(): void{
         if(!is_api_request()){
             abort(Response::NOT_FOUND);
         }
@@ -92,7 +93,8 @@ class SessionController
 
         if(!$token){
             Response::json(
-                ['errror' => 'Debes proporcionar un token válido']
+                ['errror' => 'Debes proporcionar un token válido'],
+                Response::BAD_REQUEST
             );
         }
 

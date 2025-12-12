@@ -6,7 +6,7 @@ class ApiToken
     private Database $db;
     private int $timeLiveTokens; //para ver el tiempo que le queda al token
 
-    public function __construct(int $timeLiveTokens)
+    public function __construct(int $timeLiveTokens = 3600)
     {
         $this->db = App::resolve(Database::class);
         $this->timeLiveTokens = $timeLiveTokens;
