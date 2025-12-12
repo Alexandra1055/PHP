@@ -4,9 +4,10 @@ namespace Core;
 class ApiToken
 {
     private Database $db;
-    private int $timeLiveTokens; //para ver el tiempo que le queda al token
 
-    public function __construct(int $timeLiveTokens = 3600)
+    private int $timeLiveTokens;
+
+    public function __construct(int $timeLiveTokens = 3600) // tiempo de vida del token en segundos, esto seria 1h
     {
         $this->db = App::resolve(Database::class);
         $this->timeLiveTokens = $timeLiveTokens;
@@ -19,16 +20,15 @@ class ApiToken
 
         $expiresAt = (new \DateTimeImmutable(
             "+{$this->timeLiveTokens} seconds"))
-        ->format("Y-m-d H:i:s")
-        ;
+            ->format('Y-m-d H:i:s');
 
         $this->db->query(
             'INSERT INTO api_tokens (user_id, token, expires_at)
-                    VALUES (:user_id, :token, :expires_at)',
+             VALUES (:user_id, :token, :expires_at)',
             [
                 'user_id' => $userId,
                 'token' => $token,
-                'expires_at'=>$expiresAt,
+                'expires_at' => $expiresAt,
             ]
         );
 
@@ -42,35 +42,36 @@ class ApiToken
         }
 
         $row = $this->db
-            ->query('SELECT user_id, expiresAt FROM api_tokens WHERE token = :token LIMIT 1',
-                ['token' => $token])
+            ->query('SELECT user_id, expires_at FROM api_tokens WHERE token = :token LIMIT 1',
+                ['token' => $token]
+            )
             ->find();
 
         if (!$row) {
             return null;
         }
 
-        $expiresAt = strtotime($row['expiresAt']);
-        if($expiresAt!==false && $expiresAt < time()) {
+        //compruebo caducidad, y con el delete lo elimino despues cuando caduque
+        $expiresAt = strtotime($row['expires_at']);
+        if ($expiresAt !== false && $expiresAt < time()) {
             $this->deleteToken($token);
             return null;
-        }//elimino cuando caduque el token
+        }
 
         return (int)$row['user_id'];
     }
 
-    public function deleteToken(string $token): void //elimina el token de la base de datos
-    {
+    public function deleteToken(string $token): void{//elimina el token de la base de datos
         $this->db->query(
             'DELETE FROM api_tokens WHERE token = :token',
             ['token' => $token]
         );
     }
 
-    public function deleteAllTokensForUser(int $userID):void{
+    public function deleteAllTokensForUser(int $userId): void {//elimina todos los tokens de un usuario
         $this->db->query(
-            'DELETE FROM api_tokens WHERE user_id=:user_id',
-            ['user_id' => $userID]
+            'DELETE FROM api_tokens WHERE user_id = :user_id',
+            ['user_id' => $userId]
         );
     }
 }

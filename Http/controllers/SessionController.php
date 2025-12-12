@@ -18,8 +18,8 @@ class SessionController
     }
 
     // POST /api/session/login
-    public function apiLogin(): void //generamos el token
-    {
+    public function apiLogin(): void {//generamos el token
+
         if (!is_api_request()) {
             abort(Response::NOT_FOUND);
         }
@@ -64,8 +64,7 @@ class SessionController
     }
 
     // POST /api/session/logout
-    public function apiLogout(): void //invalidamos el token
-    {
+    public function apiLogout(): void{ //invalidamos el token
         if (!is_api_request()) {
             abort(Response::NOT_FOUND);
         }
@@ -84,8 +83,8 @@ class SessionController
         Response::json(['message' => 'Sesión REST cerrada correctamente']);
     }
 
-    public function apiLogoutAll(): void{
-        if(!is_api_request()){
+    public function apiLogoutAll(): void{ // DELETE /api/session/all, asi elimino los tokens del usuario
+        if (!is_api_request()) {
             abort(Response::NOT_FOUND);
         }
 
@@ -93,23 +92,22 @@ class SessionController
 
         if(!$token){
             Response::json(
-                ['errror' => 'Debes proporcionar un token válido'],
+                ['error' => 'Token no proporcionado'],
                 Response::BAD_REQUEST
             );
         }
 
         $userId = $this->tokens->userIdFromToken($token);
-
         if(!$userId){
             Response::json(
-                ['error' => 'El token no es válido'],Response::UNAUTHORIZED
+                ['error' => 'Token inválido'],
+                Response::UNAUTHORIZED
             );
         }
 
-        $this->tokens->deleteAllTokensForUser(($userId));
+        $this->tokens->deleteAllTokensForUser($userId);
 
-        Response::json(
-            ['mensaje' => 'Se han cerrado todas las sesiones del usuario correctamente']
-        );
+        Response::json(['message' => 'Se cerraron todas las sesiones correctamente']);
+
     }
 }
