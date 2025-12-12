@@ -66,4 +66,11 @@ class ApiToken
             ['token' => $token]
         );
     }
+
+    public function deleteAllTokensForUser(int $userID):void{
+        $this->db->query(
+            'DELETE FROM api_tokens WHERE user_id=:user_id',
+            ['user_id' => $userID]
+        );
+    }
 }

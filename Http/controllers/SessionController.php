@@ -82,4 +82,32 @@ class SessionController
 
         Response::json(['message' => 'Sesión REST cerrada correctamente']);
     }
+
+    public function apuiLogoutAll(): void{
+        if(!is_api_request()){
+            abort(Response::NOT_FOUND);
+        }
+
+        $token = get_bearer_token();
+
+        if(!$token){
+            Response::json(
+                ['errror' => 'Debes proporcionar un token válido']
+            );
+        }
+
+        $userId = $this->tokens->userIdFromToken($token);
+
+        if(!$userId){
+            Response::json(
+                ['error' => 'El token no es válido'],Response::UNAUTHORIZED
+            );
+        }
+
+        $this->tokens->deleteAllTokensForUser(($userId));
+
+        Response::json(
+            ['mensaje' => 'Se han cerrado todas las sesiones del usuario correctamente']
+        );
+    }
 }

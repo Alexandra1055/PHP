@@ -27,6 +27,9 @@ $router->post('/login', 'session/store.php')->only('guest');
 $router->delete('/login', 'session/destroy.php')->only('auth');
 
 // Rest
+$router->post('/api/session',[SessionController::class, 'store'])->only('auth');
+$router->delete('/api/session/delete', [SEssionController::class, 'destroy'])->only('auth');
+
 $router->post('/api/session/login', [SessionController::class, 'apiLogin']);
 $router->post('/api/session/logout', [SessionController::class, 'apiLogout']);
 
