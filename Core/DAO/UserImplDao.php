@@ -15,6 +15,5 @@ class UserImplDao implements UserDao
 
     public function getAllTokens()
     {
-        // TODO: Implement getAllTokens() method.
     }
 }
