@@ -7,14 +7,12 @@ class ApiToken
 
     private int $timeLiveTokens;
 
-    public function __construct(int $timeLiveTokens = 3600) // tiempo de vida del token en segundos, esto seria 1h
-    {
+    public function __construct(int $timeLiveTokens = 3600){ // tiempo de vida del token en segundos, esto seria 1h
         $this->db = App::resolve(Database::class);
         $this->timeLiveTokens = $timeLiveTokens;
     }
 
-    public function generateForUser(int $userId): string //crea un token para el usuario
-    {
+    public function generateForUser(int $userId): string {//crea un token para el usuario
 
         $token = bin2hex(random_bytes(32));
 
@@ -35,8 +33,7 @@ class ApiToken
         return $token;
     }
 
-    public function userIdFromToken(?string $token): ?int //busca el user id a partir del token
-    {
+    public function userIdFromToken(?string $token): ?int{ //busca el user id a partir del token
         if (!$token) {
             return null;
         }

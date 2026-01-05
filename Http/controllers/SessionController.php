@@ -4,6 +4,7 @@ namespace Http\controllers;
 
 use Core\ApiToken;
 use Core\Authenticator;
+use Core\RequestContext;
 use Core\Response;
 
 class SessionController
@@ -11,71 +12,58 @@ class SessionController
     private Authenticator $auth;
     private ApiToken $tokens;
 
-    public function __construct()
-    {
+    public function __construct(){
         $this->auth = new Authenticator();
         $this->tokens = new ApiToken();
     }
 
-    // POST /api/session/login
-    public function apiLogin(): void {//generamos el token
-
-        if (!is_api_request()) {
+    // POST
+    public function apiLogin(): void{
+        if (!RequestContext::isApi()) {
             abort(Response::NOT_FOUND);
         }
 
-        $raw = file_get_contents('php://input');
+        $raw  = file_get_contents('php://input');
         $data = json_decode($raw, true);
 
         if (!is_array($data)) {
-            $data = $_POST;
-        } // Si no es JSON válido, miramos en $_POST
+            $data = $_POST ?? [];
+        }
 
         $email = $data['email'] ?? null;
         $password = $data['password'] ?? null;
 
         if (!$email || !$password) {
-            Response::json(
-                ['error' => 'email y password son obligatorios'],
-                Response::BAD_REQUEST
-            );
+            Response::json(['error' => 'email y password son obligatorios'], Response::BAD_REQUEST);
         }
 
-        $signedIn = $this->auth->attempt($email, $password);
-
-        if (!$signedIn) {
-            Response::json(
-                ['error' => 'Credenciales incorrectas'],
-                Response::UNAUTHORIZED
-            );
+        if (!$this->auth->attempt($email, $password)) {
+            Response::json(['error' => 'Credenciales incorrectas'], Response::UNAUTHORIZED);
         }
 
-        $userId = $this->auth->currentUserId();
-
-        $token = $this->tokens->generateForUser($userId);
+        $userId = (int) $this->auth->currentUserId();
+        $token  = $this->tokens->generateForUser($userId);
 
         Response::json([
-            'token' => $token,
-            'user'  => [
-                'id'    => $userId,
-                'email' => $email,
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+            'user' => [
+                'id' => $userId,
+                'email'=> $email,
             ],
-        ]); //devolvemos el token y los datos del usuario
+        ]);
     }
 
-    // POST /api/session/logout
-    public function apiLogout(): void{ //invalidamos el token
-        if (!is_api_request()) {
+    // DELETE
+    public function apiLogout(): void{
+        if (!RequestContext::isApi()) {
             abort(Response::NOT_FOUND);
         }
 
-        $token = get_bearer_token();
+        $token = RequestContext::token();
 
         if (!$token) {
-            Response::json(
-                ['error' => 'Token no proporcionado'],
-                Response::BAD_REQUEST
-            );
+            Response::json(['error' => 'Token no proporcionado'], Response::UNAUTHORIZED);
         }
 
         $this->tokens->deleteToken($token);
@@ -83,31 +71,20 @@ class SessionController
         Response::json(['message' => 'Sesión REST cerrada correctamente']);
     }
 
-    public function apiLogoutAll(): void{ // DELETE /api/session/all, asi elimino los tokens del usuario
-        if (!is_api_request()) {
+    // DELETE ALL
+    public function apiLogoutAll(): void{
+        if (!RequestContext::isApi()) {
             abort(Response::NOT_FOUND);
         }
 
-        $token = get_bearer_token();
+        $userId = RequestContext::userId();
 
-        if(!$token){
-            Response::json(
-                ['error' => 'Token no proporcionado'],
-                Response::BAD_REQUEST
-            );
+        if (!$userId) {
+            Response::json(['error' => 'No autenticado'], Response::UNAUTHORIZED);
         }
 
-        $userId = $this->tokens->userIdFromToken($token);
-        if(!$userId){
-            Response::json(
-                ['error' => 'Token inválido'],
-                Response::UNAUTHORIZED
-            );
-        }
-
-        $this->tokens->deleteAllTokensForUser($userId);
+        $this->tokens->deleteAllTokensForUser((int) $userId);
 
         Response::json(['message' => 'Se cerraron todas las sesiones correctamente']);
-
     }
 }

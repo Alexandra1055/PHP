@@ -1,6 +1,7 @@
 <?php
 
 use Core\Response;
+use Core\RequestContext;
 
 function dd($value){
     echo '<pre>';
@@ -13,14 +14,11 @@ function urlIs($value){
     return $_SERVER['REQUEST_URI'] === $value;
 }
 
-function is_api_request(): bool
-{
-    $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-    return substr($path, 0, 5) === '/api/';
+function is_api_request(): bool{
+    return RequestContext::isApi();
 }
 
-function abort($code = 404)
-{
+function abort($code = 404){
     if (is_api_request()) {
         $message = 'Error';
 

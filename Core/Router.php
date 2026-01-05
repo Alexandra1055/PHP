@@ -13,8 +13,9 @@ class Router{
         $this->routes[]=[
             'uri'=>$uri,
             'controller'=>$controller,
-            'method'=>$method,
-            'middleware'=>null
+            'method' => strtoupper($method),
+            'middleware' => null,
+            'request'=> 'web' //web por defecto
         ];
 
         return $this;
@@ -37,41 +38,50 @@ class Router{
     public function put($uri, $controller){
         return $this -> add('PUT', $uri, $controller);
     }
+    public function only($key){
+        $this->routes[array_key_last($this->routes)]['middleware'] = $key;
+        return $this;
+    }
 
-    public function route($uri,$method){
-        foreach ($this->routes as $route){
-            if($route['uri']===$uri && $route['method'] == strtoupper($method)){
-                //aplicamos el middleware
-                if($route['middleware']){ //como esta adjudicado como null por defecto, hacemos el if
+    public function request(string $type){
+        $type = strtolower($type);
+        if (!in_array($type, ['api', 'web'], true)) {
+            throw new \InvalidArgumentException("request() solo acepta 'api' o 'web'.");
+        }
+
+        $this->routes[array_key_last($this->routes)]['request'] = $type;
+        return $this;
+    }
+
+    public function route($uri, $method){
+        foreach ($this->routes as $route) {
+            if ($route['uri'] === $uri && $route['method'] === strtoupper($method)) {
+
+                RequestContext::setIsApi(($route['request'] ?? 'web') === 'api');
+                if ($route['middleware']) {
                     Middleware::resolve($route['middleware']);
                 }
 
                 if (is_array($route['controller'])) {
                     $controller = new $route['controller'][0]();
-                    $method = $route['controller'][1];
-                    return $controller->$method();
+                    $m = $route['controller'][1];
+                    return $controller->$m();
                 }
 
                 return require base_path('Http/controllers/' . $route['controller']);
             }
         }
-        $this -> abort();
+
+        $this->abort();
     }
 
     public function previusUrl(){
-        return $_SERVER['HTTP_REFERER'];
+        return $_SERVER['HTTP_REFERER'] ?? '/';
     }
 
-    public function only($key){
-        $this-> routes[array_key_last($this->routes)]['middleware'] = $key; //array_key_last: para coger la ultima añadida al array
-        return $this;
-    }
-
-    protected function abort($code = 404)
-    {
+    protected function abort($code = 404){
         http_response_code($code);
         require base_path("views/{$code}.php");
-
         die();
     }
 }

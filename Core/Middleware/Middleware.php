@@ -5,21 +5,20 @@ namespace Core\Middleware;
 class Middleware
 {
     public const MAP = [
-        'guest' => GUEST::class,
-        'auth' => AUTH::class
+        'guest'=> Guest::class,
+        'auth' => Auth::class,
     ];
 
     public static function resolve($key){
-        if(!$key){
+        if (!$key) {
             return;
         }
 
-        $middleware = static::MAP[$key] ?? false;
+        $middleware = static::MAP[$key] ?? null;
 
-        if(!$middleware){
-            return \Exception("No se ha encontrado ningun middleware con la clave '{$key}'.");
+        if (!$middleware) {
+            throw new \Exception("No se ha encontrado ningún middleware con la clave '{$key}'.");
         }
-
         (new $middleware)->handle();
     }
 }
