@@ -27,15 +27,10 @@ $router->post('/login', 'session/store.php')->only('guest')->request('web');
 $router->delete('/login', 'session/destroy.php')->only('auth')->request('web');
 
 
-// API REST (autenticación por tokens)
-
-// Login sin auth
+// API REST
+// Login y Logaout
 $router->post('/api/session/login', [SessionController::class, 'apiLogin'])->request('api');
-
-// Logout con auth
 $router->delete('/api/session', [SessionController::class, 'apiLogout'])->only('auth')->request('api');
-
-// Logout all tokens
 $router->delete('/api/session/all', [SessionController::class, 'apiLogoutAll'])->only('auth')->request('api');
 
 // Usuario
